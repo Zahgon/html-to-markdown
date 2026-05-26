@@ -1,57 +1,25 @@
 package textutils
 
-import (
-	"bytes"
-	"unicode/utf8"
-)
+func TrimUnnecessaryHardLineBreaks(content []byte) []byte { _ = "STUB: not implemented"; return nil }
 
-func TrimUnnecessaryHardLineBreaks(content []byte) []byte {
-	content = bytes.ReplaceAll(content, []byte("  \n\n"), []byte("\n\n"))
-	content = bytes.ReplaceAll(content, []byte("  \n  \n"), []byte("\n\n"))
-	content = bytes.ReplaceAll(content, []byte("  \n \n"), []byte("\n\n"))
-	// out = bytes.ReplaceAll(out, []byte("\n  \n"), []byte("\n\n"))
+// out = bytes.ReplaceAll(out, []byte("\n  \n"), []byte("\n\n"))
 
-	return content
-}
+func TrimConsecutiveNewlines(input []byte) []byte { _ = "STUB: not implemented"; return nil }
 
-func TrimConsecutiveNewlines(input []byte) []byte {
-	var result []byte
-	newlineCount := 0
-	spaceBuffer := []byte{}
+// Preserve up to 2 newlines, including preceding spaces
 
-	for i := 0; i < len(input); {
-		r, size := utf8.DecodeRune(input[i:])
+// Clear space buffer
 
-		if r == '\n' {
-			newlineCount++
-			if newlineCount <= 2 {
-				// Preserve up to 2 newlines, including preceding spaces
-				result = append(result, spaceBuffer...)
-				result = append(result, '\n')
-				spaceBuffer = spaceBuffer[:0] // Clear space buffer
-			} else {
-				// Skip additional newlines
-				spaceBuffer = spaceBuffer[:0] // Clear space buffer
-			}
-		} else if r == ' ' {
-			// Collect spaces into the space buffer
-			spaceBuffer = append(spaceBuffer, input[i:i+size]...)
-		} else {
-			// Reset newline count and append non-newline characters
-			newlineCount = 0
-			result = append(result, spaceBuffer...)
-			result = append(result, input[i:i+size]...)
-			spaceBuffer = spaceBuffer[:0] // Clear space buffer
-		}
+// Skip additional newlines
+// Clear space buffer
 
-		i += size
-	}
+// Collect spaces into the space buffer
 
-	// Append any trailing spaces
-	result = append(result, spaceBuffer...)
+// Reset newline count and append non-newline characters
 
-	return result
-}
+// Clear space buffer
+
+// Append any trailing spaces
 
 /*
 func TrimConsecutiveNewlines(source []byte) []byte {

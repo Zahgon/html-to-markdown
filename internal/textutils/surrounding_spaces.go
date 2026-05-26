@@ -38,21 +38,7 @@ SOFTWARE.
 
 package textutils
 
-import (
-	"bytes"
-	"unicode"
-)
-
 func SurroundingSpaces(content []byte) ([]byte, []byte, []byte) {
-	rightTrimmed := bytes.TrimRightFunc(content, func(r rune) bool {
-		return unicode.IsSpace(r)
-	})
-	rightExtra := content[len(rightTrimmed):]
-
-	trimmed := bytes.TrimLeftFunc(rightTrimmed, func(r rune) bool {
-		return unicode.IsSpace(r)
-	})
-	leftExtra := content[0 : len(rightTrimmed)-len(trimmed)]
-
-	return leftExtra, trimmed, rightExtra
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }

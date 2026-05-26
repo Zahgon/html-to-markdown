@@ -27,23 +27,7 @@ type Converter struct {
 
 type converterOption = func(c *Converter) error
 
-func NewConverter(opts ...converterOption) *Converter {
-	conv := &Converter{
-		markdownChars: make(map[rune]interface{}),
-		tagTypes:      make(map[string]prioritizedSlice[tagType]),
-	}
-	conv.Register = register{conv}
-
-	for _, opt := range opts {
-		err := opt(conv)
-		if err != nil {
-			conv.setError(err)
-			break
-		}
-	}
-
-	return conv
-}
+func NewConverter(opts ...converterOption) *Converter { _ = "STUB: not implemented"; return nil }
 
 type escapeMode string
 
@@ -65,8 +49,6 @@ const (
 //
 //	default: "smart"
 func WithEscapeMode(mode escapeMode) converterOption {
-	return func(c *Converter) error {
-		c.escapeMode = mode
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(converterOption)
 }

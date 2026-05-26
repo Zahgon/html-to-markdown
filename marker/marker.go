@@ -1,9 +1,5 @@
 package marker
 
-import (
-	"bytes"
-)
-
 const (
 	// For simplicity we are using a rune that is one byte wide. A character
 	// that is not used widely (apart from cli's) is the bell character (7).
@@ -27,8 +23,4 @@ func init() {
 	checkRuneAndByteSlice(MarkerCodeBlockNewline, BytesMarkerCodeBlockNewline)
 }
 
-func checkRuneAndByteSlice(r rune, b []byte) {
-	if !bytes.Equal([]byte(string(r)), b) {
-		panic("the rune and byte slice do not represent the same character")
-	}
-}
+func checkRuneAndByteSlice(r rune, b []byte) { _ = "STUB: not implemented"; return }

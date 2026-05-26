@@ -3,64 +3,29 @@ package domutils
 import (
 	"context"
 
-	"github.com/JohannesKaufmann/dom"
 	"golang.org/x/net/html"
 )
 
 // TODO: make this configurable via the options???
-func getMarkdownStructure(name string) string {
-	switch name {
-	case "#document", "html", "head", "body",
-		"blockquote", "ul", "ol", "li":
-		// A container block can also contain other blocks.
-		return "container_block"
+func getMarkdownStructure(name string) string { _ = "STUB: not implemented"; return "" }
 
-	// Note: "p" would also be part of "leaf_block"
-	case "hr", "pre",
-		"h1", "h2", "h3", "h4", "h5", "h6":
-		// Leaf blocks can contain inline content
-		// but NOT other blocks.
-		return "leaf_block"
+// A container block can also contain other blocks.
 
-	case "#text", "span", "code",
-		"b", "strong", "i", "em",
-		"a", "img", "br":
-		return "inline"
+// Note: "p" would also be part of "leaf_block"
 
-	case "div", "p":
-		// Since these are just placing newlines,
-		// we dont categorize them.
-		return ""
+// Leaf blocks can contain inline content
+// but NOT other blocks.
 
-	default:
-		return ""
-	}
-}
+// Since these are just placing newlines,
+// we dont categorize them.
 
-func headingAlternative(ctx context.Context, node *html.Node) {
-	node.Data = "strong"
+func headingAlternative(ctx context.Context, node *html.Node) { _ = "STUB: not implemented"; return }
 
-	newChild := &html.Node{
-		Type: html.ElementNode,
-		Data: "br",
-	}
-	node.Parent.InsertBefore(newChild, node.NextSibling)
-}
-func blockquoteAlternative(ctx context.Context, node *html.Node) {
-	newBefore := &html.Node{Type: html.TextNode, Data: ` "`}
-	node.Parent.InsertBefore(newBefore, node)
+func blockquoteAlternative(ctx context.Context, node *html.Node) { _ = "STUB: not implemented"; return }
 
-	node.Data = "span"
+func preAlternative(ctx context.Context, node *html.Node) { _ = "STUB: not implemented"; return }
 
-	newAfter := &html.Node{Type: html.TextNode, Data: `" `}
-	node.Parent.InsertBefore(newAfter, node.NextSibling)
-}
-func preAlternative(ctx context.Context, node *html.Node) {
-	node.Data = "code"
-}
-func hrAlternative(ctx context.Context, node *html.Node) {
-	dom.RemoveNode(node)
-}
+func hrAlternative(ctx context.Context, node *html.Node) { _ = "STUB: not implemented"; return }
 
 // TODO: make this configurable via the options?
 var alternatives = map[string]func(ctx context.Context, node *html.Node){
@@ -75,40 +40,14 @@ var alternatives = map[string]func(ctx context.Context, node *html.Node){
 	"hr":         hrAlternative,
 }
 
-func LeafBlockAlternatives(ctx context.Context, doc *html.Node) {
-	var finder func(node *html.Node, isInsideLeafBlock bool, isInsideInline bool)
-	finder = func(node *html.Node, isInsideLeafBlock bool, isInsideInline bool) {
-		name := dom.NodeName(node)
+func LeafBlockAlternatives(ctx context.Context, doc *html.Node) { _ = "STUB: not implemented"; return }
 
-		structure := getMarkdownStructure(name)
-		if (structure == "container_block" || structure == "leaf_block") && (isInsideLeafBlock || isInsideInline) {
-			// A block inside an inline OR a block inside a leaf-block
-			// is not valid markdown so cannot be rendered.
-			//
-			// For example, you cannot place a blockquote inside a heading.
-			//
-			// Instead of this weird output (## Heading > My Quote)
-			// we try to find alternatives (## Heading "My Quote")
-			fn, ok := alternatives[name]
-			if ok {
-				fn(ctx, node)
-			} else {
-				node.Data = "span"
-			}
-		}
+// A block inside an inline OR a block inside a leaf-block
+// is not valid markdown so cannot be rendered.
+//
+// For example, you cannot place a blockquote inside a heading.
+//
+// Instead of this weird output (## Heading > My Quote)
+// we try to find alternatives (## Heading "My Quote")
 
-		// - - - - - - - - - - - - - - - - - - - - - - //
-
-		if structure == "leaf_block" {
-			isInsideLeafBlock = true
-		}
-		if structure == "inline" {
-			isInsideInline = true
-		}
-
-		for child := node.FirstChild; child != nil; child = child.NextSibling {
-			defer finder(child, isInsideLeafBlock, isInsideInline)
-		}
-	}
-	finder(doc, false, false)
-}
+// - - - - - - - - - - - - - - - - - - - - - - //

@@ -44,42 +44,15 @@ SOFTWARE.
 package collapse
 
 import (
-	"strings"
-
-	"github.com/JohannesKaufmann/dom"
 	"golang.org/x/net/html"
 )
 
 func nextNode(prev *html.Node, current *html.Node, domFuncs *DomFuncs) *html.Node {
-	if (prev != nil && prev.Parent == current) || domFuncs.IsPreformattedNode(current) {
-		if current.NextSibling != nil {
-			return current.NextSibling
-		}
-
-		return current.Parent
-	}
-
-	if current.FirstChild != nil {
-		return current.FirstChild
-	}
-	if current.NextSibling != nil {
-		return current.NextSibling
-	}
-
-	return current.Parent
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func removeNode(node *html.Node) *html.Node {
-	next := node.NextSibling
-	if next == nil {
-		next = node.Parent
-	}
-
-	node.Parent.RemoveChild(node)
-
-	return next
-
-}
+func removeNode(node *html.Node) *html.Node { _ = "STUB: not implemented"; return nil }
 
 type DomFuncs struct {
 	IsBlockNode        func(node *html.Node) bool
@@ -87,88 +60,22 @@ type DomFuncs struct {
 	IsPreformattedNode func(node *html.Node) bool
 }
 
-func fillDefaultDomFuncs(domFuncs *DomFuncs) *DomFuncs {
-	if domFuncs == nil {
-		domFuncs = &DomFuncs{}
-	}
-	if domFuncs.IsBlockNode == nil {
-		domFuncs.IsBlockNode = defaultIsBlockNode
-	}
-	if domFuncs.IsVoidNode == nil {
-		domFuncs.IsVoidNode = defaultIsVoidNode
-	}
-	if domFuncs.IsPreformattedNode == nil {
-		domFuncs.IsPreformattedNode = defaultIsPreformattedNode
-	}
-	return domFuncs
+func fillDefaultDomFuncs(domFuncs *DomFuncs) *DomFuncs { _ = "STUB: not implemented"; return nil }
 
-}
-func Collapse(element *html.Node, domFuncs *DomFuncs) {
-	domFuncs = fillDefaultDomFuncs(domFuncs)
-	// - - - - - - - - - - - - - - - - - - //
+func Collapse(element *html.Node, domFuncs *DomFuncs) { _ = "STUB: not implemented"; return }
 
-	if element.FirstChild == nil || domFuncs.IsPreformattedNode(element) {
-		return
-	}
+// - - - - - - - - - - - - - - - - - - //
 
-	var prevText *html.Node = nil
-	var keepLeadingWs = false
+/* node.nodeType == 4 */ // Node.TEXT_NODE or Node.CDATA_SECTION_NODE
 
-	var prev *html.Node = nil
-	var node = nextNode(prev, element, domFuncs)
+// `text` might be empty at this point.
 
-	for node != element {
-		if node.Type == html.TextNode /* node.nodeType == 4 */ { // Node.TEXT_NODE or Node.CDATA_SECTION_NODE
-			var text = replaceAnyWhitespaceWithSpace(node.Data)
+// Node.ELEMENT_NODE
 
-			if (prevText == nil || strings.HasSuffix(prevText.Data, " ")) &&
-				!keepLeadingWs && text != "" && text[0] == ' ' {
-				text = text[1:]
-			}
+// Avoid trimming space around non-block, non-BR void elements and inline PRE.
 
-			// `text` might be empty at this point.
-			if text == "" {
-				node = removeNode(node)
-				continue
-			}
+// Drop protection if set previously.
 
-			node.Data = text
+// TODO: Is this enough to keep the comments? Does this cause other problems?
 
-			prevText = node
-		} else if node.Type == html.ElementNode { // Node.ELEMENT_NODE
-			if domFuncs.IsBlockNode(node) || dom.NodeName(node) == "br" {
-				if prevText != nil {
-					prevText.Data = strings.TrimSuffix(prevText.Data, " ")
-				}
-
-				prevText = nil
-				keepLeadingWs = false
-			} else if domFuncs.IsVoidNode(node) || domFuncs.IsPreformattedNode(node) || dom.NodeName(node) == "code" {
-				// Avoid trimming space around non-block, non-BR void elements and inline PRE.
-				prevText = nil
-				keepLeadingWs = true
-			} else if prevText != nil {
-				// Drop protection if set previously.
-				keepLeadingWs = false
-			}
-		} else if node.Type == html.CommentNode {
-			// TODO: Is this enough to keep the comments? Does this cause other problems?
-		} else {
-			// E.g. DoctypeNode
-
-			node = removeNode(node)
-			continue
-		}
-
-		var nextNode = nextNode(prev, node, domFuncs)
-		prev = node
-		node = nextNode
-	}
-
-	if prevText != nil {
-		prevText.Data = strings.TrimSuffix(prevText.Data, " ")
-		if prevText.Data == "" {
-			removeNode(prevText)
-		}
-	}
-}
+// E.g. DoctypeNode

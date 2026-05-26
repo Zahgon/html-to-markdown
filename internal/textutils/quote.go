@@ -1,39 +1,20 @@
 package textutils
 
-import "bytes"
-
 const (
 	DOUBLE_QUOTE = '"'
 	SINGLE_QUOTE = '\''
 )
 
-func SurroundBy(content []byte, chars []byte) []byte {
-	content = append(chars, content...)
-	content = append(content, chars...)
-	return content
-}
-func SurroundByQuotes(content []byte) []byte {
-	if len(content) == 0 {
-		return nil
-	}
+func SurroundBy(content []byte, chars []byte) []byte { _ = "STUB: not implemented"; return nil }
 
-	containsDoubleQuote := bytes.ContainsRune(content, DOUBLE_QUOTE)
-	containsSingleQuote := bytes.ContainsRune(content, SINGLE_QUOTE)
+func SurroundByQuotes(content []byte) []byte { _ = "STUB: not implemented"; return nil }
 
-	if containsDoubleQuote && containsSingleQuote {
-		// Escape all quotes
-		content = bytes.ReplaceAll(content, []byte(`"`), []byte(`\"`))
+// Escape all quotes
 
-		// Surround the content by double quotes
-		return SurroundBy(content, []byte(`"`))
-	}
-	if containsDoubleQuote {
-		// Since it contains double quotes (but no single quotes)
-		// we can surround it by single quotes
-		return SurroundBy(content, []byte(`'`))
-	}
+// Surround the content by double quotes
 
-	// It may contain single quotes, but definitely no double quotes,
-	// so we can safely surround it by double quotes.
-	return SurroundBy(content, []byte(`"`))
-}
+// Since it contains double quotes (but no single quotes)
+// we can surround it by single quotes
+
+// It may contain single quotes, but definitely no double quotes,
+// so we can safely surround it by double quotes.

@@ -9,22 +9,10 @@ func Run(
 
 	release Release,
 ) {
-
-	cli := CLI{
-		Stdin:  stdin,
-		Stdout: stdout,
-		Stderr: stderr,
-
-		OsArgs: osArgs,
-
-		Release: release,
-	}
-
-	// - - - - - init - - - - - //
-	if err := cli.Init(); err != nil {
-		panic(err)
-	}
-
-	// - - - - - exec - - - - - //
-	cli.Execute()
+	_ = "STUB: not implemented"
+	return
 }
+
+// - - - - - init - - - - - //
+
+// - - - - - exec - - - - - //

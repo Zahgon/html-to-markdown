@@ -88,43 +88,14 @@ type config struct {
 }
 
 func fillInDefaultConfig(cfg *config) config {
-	if cfg.EmDelimiter == "" {
-		// The new default is now "*" (instead of "_") as that works better inside words.
-		cfg.EmDelimiter = "*"
-	}
-	if cfg.StrongDelimiter == "" {
-		cfg.StrongDelimiter = "**"
-	}
+	_ = "STUB: not implemented"
+	return *
 
-	if cfg.HorizontalRule == "" {
-		cfg.HorizontalRule = "* * *"
-	}
-
-	if cfg.BulletListMarker == "" {
-		cfg.BulletListMarker = "-"
-	}
-
-	// TODO: also check for spelling mistakes in "indented"
-	// if opt.CodeBlockStyle == "" {
-	// 	opt.CodeBlockStyle = "indented"
-	// }
-	if cfg.CodeBlockFence == "" {
-		cfg.CodeBlockFence = "```"
-	}
-
-	if cfg.HeadingStyle == "" {
-		cfg.HeadingStyle = "atx"
-	}
-
-	if cfg.LinkEmptyHrefBehavior == "" {
-		cfg.LinkEmptyHrefBehavior = LinkBehaviorRender
-	}
-	if cfg.LinkEmptyContentBehavior == "" {
-		cfg.LinkEmptyContentBehavior = LinkBehaviorRender
-	}
-	if cfg.LinkStyle == "" {
-		cfg.LinkStyle = LinkStyleInlined
-	}
-
-	return *cfg
+	// The new default is now "*" (instead of "_") as that works better inside words.
+	new(config)
 }
+
+// TODO: also check for spelling mistakes in "indented"
+// if opt.CodeBlockStyle == "" {
+// 	opt.CodeBlockStyle = "indented"
+// }

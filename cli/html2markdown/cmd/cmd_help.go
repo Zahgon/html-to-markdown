@@ -1,10 +1,7 @@
 package cmd
 
 import (
-	"flag"
-	"fmt"
 	"io"
-	"sort"
 	"strings"
 	"text/template"
 )
@@ -87,42 +84,10 @@ var templateFuncs = template.FuncMap{
 	},
 }
 
-func tmpl(w io.Writer, text string, data interface{}) error {
-	t := template.New("usage")
-	t.Funcs(templateFuncs)
+func tmpl(w io.Writer, text string, data interface{}) error { _ = "STUB: not implemented"; return nil }
 
-	_, err := t.Parse(text)
-	if err != nil {
-		return err
-	}
-	return t.Execute(w, data)
-}
+func (cli *CLI) initUsageText() error { _ = "STUB: not implemented"; return nil }
 
-func (cli *CLI) initUsageText() error {
-	var flags []*flag.Flag
-	cli.flags.VisitAll(func(f *flag.Flag) {
-		if f.Name == "v" || f.Name == "version" || f.Name == "input" || f.Name == "output" || f.Name == "output-overwrite" {
-			// We manually mention these in the usage
-			return
-		}
-		flags = append(flags, f)
-	})
-	sort.Slice(flags, func(i, j int) bool {
-		return flags[i].Name < flags[j].Name
-	})
+// We manually mention these in the usage
 
-	data := map[string]any{
-		"Version": cli.Release.Version,
-		"Flags":   flags,
-	}
-	err := tmpl(&cli.usageText, usageTemplate, data)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (cli CLI) printUsage() {
-	fmt.Fprint(cli.Stdout, cli.usageText.String())
-}
+func (cli CLI) printUsage() { _ = "STUB: not implemented"; return }

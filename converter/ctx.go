@@ -2,9 +2,7 @@ package converter
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/JohannesKaufmann/dom"
 	"golang.org/x/net/html"
 )
 
@@ -28,37 +26,26 @@ const (
 )
 
 func provideDomain(ctx context.Context, domain string) context.Context {
-	return context.WithValue(ctx, ctxKeyDomain, domain)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
-func GetDomain(ctx context.Context) string {
-	domain, ok := ctx.Value(ctxKeyDomain).(string)
-	if !ok {
-		fmt.Println("[warning] value ctxKeyDomain is different")
-		return ""
-	}
 
-	return domain
-}
+func GetDomain(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
 
 // - - - - - - - - - - - - - - - - - - - - - //
 
 type AssembleAbsoluteURLFunc func(tagName string, rawURL string, domain string) string
 
 func assembleAbsoluteURL(ctx context.Context, tagName string, rawURL string) string {
-	domain := GetDomain(ctx)
+	_ = "STUB: not implemented"
+	return ""
 
 	// TODO: since this gets passed down from the converter, it doesn't have to provided from the ctx anymore
-	fn, ok := ctx.Value(ctxKeyAssembleAbsoluteURL).(AssembleAbsoluteURLFunc)
-	if !ok {
-		fmt.Println("[warning] func ctxKeyAssembleAbsoluteURL is different")
-		return ""
-	}
-
-	return fn(tagName, rawURL, domain)
 }
 
 func provideAssembleAbsoluteURL(ctx context.Context, fn AssembleAbsoluteURLFunc) context.Context {
-	return context.WithValue(ctx, ctxKeyAssembleAbsoluteURL, fn)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // - - - - - - - - - - - - - - - - - - - - - //
@@ -71,63 +58,29 @@ type globalState struct {
 	data map[string]any
 }
 
-func newGlobalState() *globalState {
+func newGlobalState() *globalState { _ = "STUB: not implemented"; return nil }
 
-	return &globalState{
-		data: make(map[string]any),
-	}
-}
+func (s *globalState) setState(key string, val any) { _ = "STUB: not implemented"; return }
 
-func (s *globalState) setState(key string, val any) {
-	s.data[key] = val
-}
-func (s *globalState) updateState(key string, fn func(any) any) {
-	s.data[key] = fn(s.data[key])
-}
-func (s *globalState) getState(key string) any {
-	return s.data[key]
-}
+func (s *globalState) updateState(key string, fn func(any) any) { _ = "STUB: not implemented"; return }
+
+func (s *globalState) getState(key string) any { _ = "STUB: not implemented"; return *new(any) }
 
 func (s *globalState) provideGlobalState(ctx context.Context) context.Context {
-
-	var setState SetStateFunc = s.setState
-	var updateState UpdateStateFunc = s.updateState
-	var getState GetStateFunc = s.getState
-
-	ctx = context.WithValue(ctx, ctxKeySetState, setState)
-	ctx = context.WithValue(ctx, ctxKeyUpdateState, updateState)
-	ctx = context.WithValue(ctx, ctxKeyGetState, getState)
-
-	return ctx
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
-func GetState[V any](ctx context.Context, key string) V {
-	fn := ctx.Value(ctxKeyGetState).(GetStateFunc)
+func GetState[V any](ctx context.Context, key string) V { _ = "STUB: not implemented"; return *new(V) }
 
-	val, _ := fn(key).(V)
-
-	return val
-}
-
-func SetState[V any](ctx context.Context, key string, val V) {
-	fn := ctx.Value(ctxKeySetState).(SetStateFunc)
-
-	fn(key, val)
-}
+func SetState[V any](ctx context.Context, key string, val V) { _ = "STUB: not implemented"; return }
 
 func UpdateState[V any](ctx context.Context, key string, fn func(V) V) {
-	updater := ctx.Value(ctxKeyUpdateState).(UpdateStateFunc)
-
-	updater(key, func(val any) any {
-		value, ok := val.(V)
-		if !ok && val != nil {
-			// TODO: slog?
-			fmt.Println("[warning] val is different than V in UpdateState")
-		}
-
-		return fn(value)
-	})
+	_ = "STUB: not implemented"
+	return
 }
+
+// TODO: slog?
 
 // - - - - - - //
 
@@ -155,36 +108,41 @@ type converterContext struct {
 }
 
 func newConverterContext(ctx context.Context, conv *Converter) Context {
-	return &converterContext{
-		Context: ctx,
-		conv:    conv,
-	}
+	_ = "STUB: not implemented"
+	return *new(Context)
 }
 
 func (c *converterContext) AssembleAbsoluteURL(ctx Context, tagName string, rawURL string) string {
-	return assembleAbsoluteURL(ctx, tagName, rawURL)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func (c *converterContext) RenderNodes(ctx Context, w Writer, nodes ...*html.Node) {
-	c.conv.handleRenderNodes(ctx, w, nodes...)
+	_ = "STUB: not implemented"
+	return
 }
+
 func (c *converterContext) RenderChildNodes(ctx Context, w Writer, n *html.Node) {
-	c.conv.handleRenderNodes(ctx, w, dom.AllChildNodes(n)...)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (c *converterContext) GetTagType(tagName string) (tagType, bool) {
-	return c.conv.getTagType(tagName)
+	_ = "STUB: not implemented"
+	return *new(tagType), false
 }
+
 func (c *converterContext) EscapeContent(content []byte) []byte {
-	return c.conv.escapeContent(content)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func (c *converterContext) UnEscapeContent(content []byte) []byte {
-	return c.conv.unEscapeContent(content)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (c *converterContext) WithValue(key any, val any) Context {
-	return &converterContext{
-		Context: context.WithValue(c.Context, key, val),
-		conv:    c.conv,
-	}
+	_ = "STUB: not implemented"
+	return *new(Context)
 }

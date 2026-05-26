@@ -3,7 +3,6 @@ package cmd
 import (
 	"io"
 	"io/fs"
-	"os"
 )
 
 type ReadWriterWithStat interface {
@@ -12,14 +11,4 @@ type ReadWriterWithStat interface {
 	Stat() (fs.FileInfo, error)
 }
 
-func isPipe(f ReadWriterWithStat) (bool, error) {
-	stat, err := f.Stat()
-	if err != nil {
-		return false, err
-	}
-
-	if stat.Mode()&os.ModeCharDevice == 0 {
-		return true, nil
-	}
-	return false, nil
-}
+func isPipe(f ReadWriterWithStat) (bool, error) { _ = "STUB: not implemented"; return false, nil }

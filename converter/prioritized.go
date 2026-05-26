@@ -1,7 +1,5 @@
 package converter
 
-import "sort"
-
 const (
 	// PriorityEarly means that the handler will be run **early** in the process.
 	// To run it even earlier you need to subtract from this number.
@@ -22,12 +20,9 @@ type prioritizedValue[V any] struct {
 
 type prioritizedSlice[V any] []prioritizedValue[V]
 
-func (s prioritizedSlice[V]) Sort() {
-	sort.Slice(s, func(i, j int) bool {
-		return s[i].Priority < s[j].Priority
-	})
-}
+func (s prioritizedSlice[V]) Sort() { _ = "STUB: not implemented"; return }
 
 func prioritized[V any](v V, priority int) prioritizedValue[V] {
-	return prioritizedValue[V]{v, priority}
+	_ = "STUB: not implemented"
+	return nil
 }

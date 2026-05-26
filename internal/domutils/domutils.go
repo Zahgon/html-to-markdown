@@ -1,43 +1,13 @@
 package domutils
 
 import (
-	"github.com/JohannesKaufmann/dom"
 	"golang.org/x/net/html"
 )
 
-func getNextTextNode(startNode *html.Node) *html.Node {
-	node := dom.GetNextNeighborNodeExcludingOwnChild(startNode)
+func getNextTextNode(startNode *html.Node) *html.Node { _ = "STUB: not implemented"; return nil }
 
-	for node != nil {
-		if node.Type == html.TextNode {
-			return node
-		}
+// A span has no special meaning. So we just skip it...
 
-		if dom.NodeName(node) == "span" {
-			// A span has no special meaning. So we just skip it...
-			node = dom.GetNextNeighborNode(node)
-			continue
-		}
+func getPrevTextNode(startNode *html.Node) *html.Node { _ = "STUB: not implemented"; return nil }
 
-		return nil
-	}
-	return nil
-}
-func getPrevTextNode(startNode *html.Node) *html.Node {
-	node := dom.GetPrevNeighborNodeExcludingOwnChild(startNode)
-
-	for node != nil {
-		if node.Type == html.TextNode {
-			return node
-		}
-
-		if dom.NodeName(node) == "span" {
-			// A span has no special meaning. So we just skip it...
-			node = dom.GetPrevNeighborNode(node)
-			continue
-		}
-
-		return nil
-	}
-	return nil
-}
+// A span has no special meaning. So we just skip it...

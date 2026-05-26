@@ -13,10 +13,6 @@ type Plugin interface {
 
 // WithPlugins can be used to add additional functionality to the converter.
 func WithPlugins(plugins ...Plugin) converterOption {
-	return func(c *Converter) error {
-		for _, plugin := range plugins {
-			c.Register.Plugin(plugin)
-		}
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(converterOption)
 }

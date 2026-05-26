@@ -1,10 +1,7 @@
 package cmd
 
 import (
-	"fmt"
 	"io"
-
-	"github.com/muesli/termenv"
 )
 
 type Printer interface {
@@ -19,17 +16,11 @@ type coloredBox struct {
 }
 
 func ColoredBox(prefix string, text string) Printer {
-	return &coloredBox{prefix, text}
+	_ = "STUB: not implemented"
+	return *new(Printer)
 }
 
-func (p coloredBox) Print(w io.Writer) {
-	output := termenv.NewOutput(w)
-
-	prefix := output.String(p.prefix + ":").Background(termenv.ANSIRed).Foreground(termenv.ANSIBrightWhite).String()
-	message := output.String(p.text).Foreground(termenv.ANSIRed).String()
-
-	fmt.Fprintf(w, "%s %s\n", prefix, message)
-}
+func (p coloredBox) Print(w io.Writer) { _ = "STUB: not implemented"; return }
 
 // - - - - - - - //
 
@@ -37,12 +28,9 @@ type paragraph struct {
 	text string
 }
 
-func Paragraph(text string) Printer {
-	return &paragraph{text}
-}
-func (p paragraph) Print(w io.Writer) {
-	fmt.Fprintln(w, p.text)
-}
+func Paragraph(text string) Printer { _ = "STUB: not implemented"; return *new(Printer) }
+
+func (p paragraph) Print(w io.Writer) { _ = "STUB: not implemented"; return }
 
 // - - - - - - - //
 
@@ -50,10 +38,10 @@ type codeBlock struct {
 	code string
 }
 
-func CodeBlock(code string) Printer {
-	return &codeBlock{code}
-}
+func CodeBlock(code string) Printer { _ = "STUB: not implemented"; return *new(Printer) }
+
 func (cb codeBlock) Print(w io.Writer) {
+	_ = "STUB: not implemented"
 	// TODO: what about indenting multiline?
-	fmt.Fprintf(w, "    %s\n", cb.code)
+	return
 }

@@ -1,10 +1,8 @@
 package table
 
 import (
-	"fmt"
 	"sync"
 
-	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"golang.org/x/net/html"
 )
@@ -24,21 +22,11 @@ const (
 // should be rendered. When a cell spans multiple columns or rows, the affected cells
 // can either be empty or contain the same content as the original cell.
 func WithSpanCellBehavior(behavior SpanCellBehavior) option {
-	return func(p *tablePlugin) error {
-		switch behavior {
-		case "":
-			// TODO: should we allow empty string?
-			return nil
-
-		case SpanBehaviorEmpty, SpanBehaviorMirror:
-			p.spanCellBehavior = behavior
-			return nil
-
-		default:
-			return fmt.Errorf("unknown value %q for span cell behavior", behavior)
-		}
-	}
+	_ = "STUB: not implemented"
+	return *new(option)
 }
+
+// TODO: should we allow empty string?
 
 type NewlineBehavior string
 
@@ -55,21 +43,11 @@ const (
 //
 // Markdown tables don't support multiline content by default, so this provides a workaround to still convert tables with newlines.
 func WithNewlineBehavior(behavior NewlineBehavior) option {
-	return func(p *tablePlugin) error {
-		switch behavior {
-		case "":
-			// Allow empty string to default to Skip
-			return nil
-
-		case NewlineBehaviorSkip, NewlineBehaviorPreserve:
-			p.newlineBehavior = behavior
-			return nil
-
-		default:
-			return fmt.Errorf("unknown value %q for newline behavior", behavior)
-		}
-	}
+	_ = "STUB: not implemented"
+	return *new(option)
 }
+
+// Allow empty string to default to Skip
 
 type CellPaddingBehavior string
 
@@ -87,55 +65,29 @@ const (
 // When set to "minimal", every cell gets a space at the beginning and end of the cell for some minimal padding.
 // When set to "none", no extra padding is applied to cells.
 func WithCellPaddingBehavior(behavior CellPaddingBehavior) option {
-	return func(p *tablePlugin) error {
-		switch behavior {
-		case "":
-			// Allow empty string to default to "aligned"
-			p.cellPaddingBehavior = CellPaddingBehaviorAligned
-			return nil
-
-		case CellPaddingBehaviorAligned, CellPaddingBehaviorMinimal, CellPaddingBehaviorNone:
-			p.cellPaddingBehavior = behavior
-			return nil
-
-		default:
-			return fmt.Errorf("unknown value %q for cell padding behavior", behavior)
-		}
-	}
+	_ = "STUB: not implemented"
+	return *new(option)
 }
+
+// Allow empty string to default to "aligned"
 
 // WithSkipEmptyRows configures the table plugin to omit empty rows from the output.
 // An empty row is defined as a row where all cells contain no content or only whitespace.
 // When set to true, empty rows will be omitted from the output. When false (default),
 // all rows are preserved.
-func WithSkipEmptyRows(skip bool) option {
-	return func(p *tablePlugin) error {
-		p.skipEmptyRows = skip
-		return nil
-	}
-}
+func WithSkipEmptyRows(skip bool) option { _ = "STUB: not implemented"; return *new(option) }
 
 // WithHeaderPromotion configures whether the first row should be treated as a header
 // when the table has no explicit header row (e.g. <th> elements). When set to true, the
 // first row will be converted to a header row with separator dashes. When false (default),
 // all rows are treated as regular content.
-func WithHeaderPromotion(promote bool) option {
-	return func(p *tablePlugin) error {
-		p.promoteFirstRowToHeader = promote
-		return nil
-	}
-}
+func WithHeaderPromotion(promote bool) option { _ = "STUB: not implemented"; return *new(option) }
 
 // WithPresentationTables configures whether tables marked with role="presentation"
 // should be converted to markdown. When set to true, presentation tables will be
 // converted like regular tables. When false (default), these tables are skipped
 // since they typically represent layout rather than semantic content.
-func WithPresentationTables(convert bool) option {
-	return func(p *tablePlugin) error {
-		p.convertPresentationTables = convert
-		return nil
-	}
-}
+func WithPresentationTables(convert bool) option { _ = "STUB: not implemented"; return *new(option) }
 
 type tablePlugin struct {
 	m   sync.RWMutex
@@ -149,69 +101,30 @@ type tablePlugin struct {
 	cellPaddingBehavior       CellPaddingBehavior
 }
 
-func (p *tablePlugin) setError(err error) {
-	p.m.Lock()
-	defer p.m.Unlock()
+func (p *tablePlugin) setError(err error) { _ = "STUB: not implemented"; return }
 
-	p.err = err
-}
-func (p *tablePlugin) getError() error {
-	p.m.RLock()
-	defer p.m.RUnlock()
-
-	return p.err
-}
+func (p *tablePlugin) getError() error { _ = "STUB: not implemented"; return nil }
 
 func NewTablePlugin(opts ...option) converter.Plugin {
-	plugin := &tablePlugin{
-		cellPaddingBehavior: CellPaddingBehaviorAligned,
-	}
-	for _, opt := range opts {
-		err := opt(plugin)
-		if err != nil {
-			plugin.setError(err)
-			break
-		}
-	}
-	return plugin
+	_ = "STUB: not implemented"
+	return *new(converter.Plugin)
 }
 
-func (s *tablePlugin) Name() string {
-	return "table"
-}
+func (s *tablePlugin) Name() string { _ = "STUB: not implemented"; return "" }
 
-func (s *tablePlugin) Init(conv *converter.Converter) error {
-	if err := s.getError(); err != nil {
-		// Any error raised from the option func
-		return err
-	}
+func (s *tablePlugin) Init(conv *converter.Converter) error { _ = "STUB: not implemented"; return nil }
 
-	conv.Register.EscapedChar('|')
-
-	conv.Register.Renderer(s.handleRender, converter.PriorityStandard)
-
-	return nil
-}
+// Any error raised from the option func
 
 func (s *tablePlugin) handleRender(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
-	name := dom.NodeName(n)
-	switch name {
-	case "table":
-		return s.renderTable(ctx, w, n)
-
-	case "tr":
-		// Normally, when the "table" gets rendered we do NOT go into this case.
-		// But as a fallback we separate the rows through newlines.
-		return s.renderFallbackRow(ctx, w, n)
-
-	}
-
-	return converter.RenderTryNext
+	_ = "STUB: not implemented"
+	return *new(converter.RenderStatus)
 }
 
+// Normally, when the "table" gets rendered we do NOT go into this case.
+// But as a fallback we separate the rows through newlines.
+
 func (s *tablePlugin) renderFallbackRow(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
-	w.WriteString("\n\n")
-	ctx.RenderChildNodes(ctx, w, n)
-	w.WriteString("\n\n")
-	return converter.RenderSuccess
+	_ = "STUB: not implemented"
+	return *new(converter.RenderStatus)
 }

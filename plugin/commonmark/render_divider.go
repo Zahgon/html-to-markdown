@@ -6,10 +6,6 @@ import (
 )
 
 func (c *commonmark) renderDivider(_ converter.Context, w converter.Writer, _ *html.Node) converter.RenderStatus {
-
-	w.WriteString("\n\n")
-	w.WriteString(c.HorizontalRule)
-	w.WriteString("\n\n")
-
-	return converter.RenderSuccess
+	_ = "STUB: not implemented"
+	return *new(converter.RenderStatus)
 }
